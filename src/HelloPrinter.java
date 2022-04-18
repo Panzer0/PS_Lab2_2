@@ -4,7 +4,7 @@ public class HelloPrinter implements Runnable {
         System.out.println("Hello world!");
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             Thread helloThread = new Thread(new HelloPrinter());
             helloThread.start();
