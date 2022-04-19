@@ -1,2 +1,4 @@
 # Project exclude paths
 /out/
+/PS_Lab2_1.iml
+/.idea/
