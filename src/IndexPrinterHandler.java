@@ -5,13 +5,14 @@ public class IndexPrinterHandler {
     TreeMap<Integer, Thread> threads;
 
     public IndexPrinterHandler() {
-        threads = new TreeMap<Integer, Thread>();
+        threads = new TreeMap<>();
         for(int i = IndexPrinter.MIN_INDEX; i <= IndexPrinter.MAX_INDEX; i++) {
             threads.put(i, new Thread(new IndexPrinter(i)));
         }
     }
 
     public void start(int index) {
+        validate(index);
         Thread thread = this.threads.get(index);
         if(thread.isAlive()) {
             thread.resume();
@@ -22,6 +23,7 @@ public class IndexPrinterHandler {
     }
 
     public void start(int firstIndex, int finalIndex) {
+        validate(firstIndex, finalIndex);
         for(int index = firstIndex; index <= finalIndex; index++) {
             Thread current = this.threads.get(index);
             if(current.isAlive()) {
@@ -33,11 +35,25 @@ public class IndexPrinterHandler {
         }
     }
 
+    public boolean validate(int index) {
+        return this.threads.containsKey(index);
+    }
+    public boolean validate(int firstIndex, int finalIndex) {
+        for(int index = firstIndex; index <= finalIndex; index++) {
+            if(!this.threads.containsKey(index)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void suspend(int index) {
+        validate(index);
         this.threads.get(index).suspend();
     }
 
     public void suspend(int firstIndex, int finalIndex) {
+        validate(firstIndex, finalIndex);
         for(int index = firstIndex; index <= finalIndex; index++) {
             this.threads.get(index).suspend();
         }
@@ -47,6 +63,8 @@ public class IndexPrinterHandler {
         try {
             IndexPrinterHandler handler = new IndexPrinterHandler();
 
+
+            int first, second;
             Scanner scanner = new Scanner(System.in);
             while(true) {
                 System.out.println("""
@@ -61,19 +79,25 @@ public class IndexPrinterHandler {
                         handler.start(scanner.nextInt());
                         break;
                     case 2:
-                        System.out.println("Enter thread index range to start");
-                        handler.start(scanner.nextInt(), scanner.nextInt());
+                        System.out.println("Enter first index");
+                        first = scanner.nextInt();
+                        System.out.println("Enter second index");
+                        second = scanner.nextInt();
+                        handler.start(first, second);
                         break;
                     case 3:
                         System.out.println("Enter thread index to suspend");
                         handler.suspend(scanner.nextInt());
                         break;
                     case 4:
-                        System.out.println("Enter thread index range to suspend");
-                        handler.suspend(scanner.nextInt(), scanner.nextInt());
+                        System.out.println("Enter first index");
+                        first = scanner.nextInt();
+                        System.out.println("Enter second index");
+                        second = scanner.nextInt();
+                        handler.suspend(first, second);
                         break;
-                    case 5:
-                        break;
+                    default:
+                        System.out.println("Invalid input");
                 }
             }
         }
