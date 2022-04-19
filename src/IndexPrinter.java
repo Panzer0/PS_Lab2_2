@@ -17,12 +17,10 @@ public class IndexPrinter implements Runnable{
 
     public void run() {
         try {
-            semaphore.acquire();
             for(char c = 'a'; c <= 'z'; c++) {
                 TimeUnit.SECONDS.sleep(1);
                 System.out.println(String.valueOf(c) + this.index%10);
             }
-            semaphore.release();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
