@@ -62,6 +62,7 @@ public class IndexPrinterHandler {
     public static void main(String[] args) {
         try {
             IndexPrinterHandler handler = new IndexPrinterHandler();
+            handler.start(IndexPrinter.MIN_INDEX, IndexPrinter.MAX_INDEX);
 
 
             int first, second;
